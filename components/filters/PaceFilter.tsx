@@ -1,6 +1,10 @@
-// components/filters/PaceFilter.tsx
+type HotelOption = {
+  hotel_code: string
+  hotel_name: string | null
+}
 
 type PaceFilterProps = {
+  hotels: HotelOption[]
   hotelCode: string
   stayYear: number
   stayMonth: number
@@ -9,6 +13,7 @@ type PaceFilterProps = {
 }
 
 export default function PaceFilter({
+  hotels,
   hotelCode,
   stayYear,
   stayMonth,
@@ -20,25 +25,21 @@ export default function PaceFilter({
       <div className="pace-filter-grid">
         <div className="pace-filter-field">
           <label>Hotel</label>
-          <select name="hotel_code" value={hotelCode} onChange={() => {}}>
+          <select name="hotel_code" defaultValue={hotelCode}>
             {hotels.map((hotel) => (
-  <option
-    key={hotel.hotel_code}
-    value={hotel.hotel_code}
-  >
-    {hotel.hotel_name ?? hotel.hotel_code}
-  </option>
-))}
+              <option
+                key={hotel.hotel_code}
+                value={hotel.hotel_code}
+              >
+                {hotel.hotel_name ?? hotel.hotel_code}
+              </option>
+            ))}
           </select>
         </div>
 
         <div className="pace-filter-field">
           <label>Year</label>
-          <select
-            name="stay_year"
-            value={String(stayYear)}
-            onChange={() => {}}
-          >
+          <select name="stay_year" defaultValue={String(stayYear)}>
             {Array.from({ length: 13 }, (_, index) => 2023 + index).map(
               (year) => (
                 <option key={year} value={year}>
@@ -51,15 +52,11 @@ export default function PaceFilter({
 
         <div className="pace-filter-field">
           <label>Month</label>
-          <select
-            name="stay_month"
-            value={String(stayMonth)}
-            onChange={() => {}}
-          >
+          <select name="stay_month" defaultValue={String(stayMonth)}>
             {Array.from({ length: 12 }, (_, index) => index + 1).map(
               (month) => (
                 <option key={month} value={month}>
-                  {month.toString().padStart(2, "0")}
+                  {month.toString().padStart(2, '0')}
                 </option>
               )
             )}

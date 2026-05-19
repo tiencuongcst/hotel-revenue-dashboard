@@ -70,9 +70,16 @@ export type PickupCurveRow = {
 
   axis_label_date?: string;
   report_date?: string;
+
   metric_value?: number | null;
   value?: number | null;
-  series_type?: 'this_month' | 'last_month' | 'ly' | 'bud' | string;
+
+  series_type?:
+    | 'this_month'
+    | 'last_month'
+    | 'ly'
+    | 'bud'
+    | string;
 };
 export type PerformancePickupOccCurveRow = {
   axis_day_index: number;
