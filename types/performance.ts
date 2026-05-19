@@ -61,11 +61,18 @@ export type RawPickupCurveRow = {
 };
 
 export type PickupCurveRow = {
-  label: string;
-  this_month: number;
-  last_month: number;
-  same_month_ly: number;
-  budget: number;
+  label?: string;
+
+  this_month?: number;
+  last_month?: number;
+  same_month_ly?: number;
+  budget?: number;
+
+  axis_label_date?: string;
+  report_date?: string;
+  metric_value?: number | null;
+  value?: number | null;
+  series_type?: 'this_month' | 'last_month' | 'ly' | 'bud' | string;
 };
 export type PerformancePickupOccCurveRow = {
   axis_day_index: number;
