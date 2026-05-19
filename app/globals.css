@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import '../styles/base.css';
+@import '../styles/layout.css';
+@import '../styles/table.css';
+@import '../styles/kpi.css';
+@import '../styles/performance.css';
+@import '../styles/pace.css';
+@import '../styles/chart.css';

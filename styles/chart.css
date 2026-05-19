@@ -1,0 +1,7 @@
+.recharts-wrapper {
+  min-width: 0;
+}
+
+.recharts-responsive-container {
+  min-width: 0 !important;
+}

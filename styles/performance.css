@@ -1,0 +1,59 @@
+.performance-filter-grid {
+  display: grid;
+  grid-template-columns:
+    minmax(280px, 2.5fr)
+    120px
+    120px
+    180px
+    120px;
+
+  gap: 16px;
+  align-items: end;
+  padding: 20px;
+}
+
+.performance-filter-field label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #6c757d;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.performance-filter-field select,
+.performance-filter-field input {
+  height: 40px;
+}
+
+.performance-filter-button {
+  height: 40px;
+  width: 100%;
+}
+
+.performance-summary-table th,
+.performance-summary-table td {
+  text-align: left !important;
+}
+
+.hotel-info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.hotel-info-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #6c757d;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.hotel-info-value {
+  margin-top: 6px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #212529;
+}
