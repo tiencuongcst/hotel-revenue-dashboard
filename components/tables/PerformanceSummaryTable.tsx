@@ -80,7 +80,9 @@ function formatMetricValue(
     return `${(numericValue * 100).toFixed(1)}%`;
   }
 
-  return formatNumber(numericValue, 0);
+  return new Intl.NumberFormat("en-US", {
+  maximumFractionDigits: 0,
+}).format(numericValue);
 }
 
 function formatChangePercent(
