@@ -9,10 +9,6 @@ export const APP_THEME = {
 
 export const SIDEBAR_NAV_ITEMS = [
   {
-    label: 'Dashboard',
-    href: '/dashboard',
-  },
-  {
     label: 'Performance',
     href: '/reports/performance',
   },

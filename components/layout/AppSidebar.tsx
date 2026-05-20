@@ -1,7 +1,6 @@
 import Link from 'next/link';
 
 const navItems = [
-  { label: 'Dashboard', href: '/dashboard' },
   { label: 'Performance', href: '/reports/performance' },
   { label: 'Pace Trend', href: '/reports/pace' },
   { label: 'Room', href: '/reports/room' },
