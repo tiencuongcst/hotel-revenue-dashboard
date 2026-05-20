@@ -1,24 +1,21 @@
 export function formatNumber(
-  value: number | string | null | undefined,
-  maximumFractionDigits = 0
+  value?: number | null
 ) {
-  return Number(value ?? 0).toLocaleString(undefined, {
-    maximumFractionDigits,
-  });
+  if (value == null) {
+    return "-";
+  }
+
+  return Intl.NumberFormat("en-US", {
+    maximumFractionDigits: 0,
+  }).format(value);
 }
 
 export function formatPercent(
-  value: number | string | null | undefined,
-  maximumFractionDigits = 1
+  value?: number | null
 ) {
-  return `${Number(value ?? 0).toFixed(maximumFractionDigits)}%`;
-}
+  if (value == null) {
+    return "-";
+  }
 
-export function formatCurrency(
-  value: number | string | null | undefined,
-  maximumFractionDigits = 0
-) {
-  return Number(value ?? 0).toLocaleString(undefined, {
-    maximumFractionDigits,
-  });
+  return `${(value * 100).toFixed(1)}%`;
 }
