@@ -31,63 +31,139 @@ export function RoomKpiTable({
 
   return (
     <div className="rounded-xl border bg-white">
-      <div className="border-b p-4 font-bold">{title}</div>
+      <div className="border-b p-4 font-bold">
+        {title}
+      </div>
 
-      <div className="room-report-table-wrapper max-h-[70vh]">
-        <table className="room-report-table">
-          <thead className="sticky top-0 z-20">
+      <div className="room-report-table-wrapper">
+        <table className="room-report-table text-[12px]">
+          <thead>
             <tr>
-              <th className="room-type-cell sticky left-0 z-30 bg-gray-100 text-xs font-bold uppercase tracking-wide">
+              <th
+                className="
+                  room-type-cell
+                  sticky
+                  left-0
+                  top-0
+                  z-40
+                  bg-gray-100
+                  text-[12px]
+                  font-bold
+                  uppercase
+                  tracking-wide
+                "
+              >
                 ROOM TYPE
               </th>
 
               {days.map((day) => (
-                <th key={day}>{day}</th>
+                <th
+                  key={day}
+                  className="
+                    sticky
+                    top-0
+                    z-30
+                    bg-gray-100
+                    text-[12px]
+                  "
+                >
+                  {day}
+                </th>
               ))}
 
-              <th className="sticky right-0 z-30 bg-gray-100 font-bold text-gray-950">
+              <th
+                className="
+                  month-total-cell
+                  sticky
+                  right-0
+                  top-0
+                  z-40
+                  bg-gray-100
+                  text-[12px]
+                "
+              >
                 Month Total
               </th>
             </tr>
           </thead>
 
           <tbody>
-            {rows.map((row) => (
-              <tr key={row.room_type}>
-                <td className="room-type-cell sticky left-0 z-10 bg-white">
-                  {row.room_name}
-                </td>
+            {rows.map((row) => {
+              const isTotalRow =
+                row.room_type === "TOTAL";
 
-                {days.map((day) => {
-                  const value = row.daily_values?.[day];
+              return (
+                <tr
+                  key={row.room_type}
+                  className={
+                    isTotalRow
+                      ? "bg-gray-100"
+                      : ""
+                  }
+                >
+                  <td
+                    className={`
+                      room-type-cell
+                      sticky
+                      left-0
+                      z-10
+                      text-[12px]
+                      ${
+                        isTotalRow
+                          ? "bg-gray-100 total-row-cell"
+                          : "bg-white"
+                      }
+                    `}
+                  >
+                    {row.room_name}
+                  </td>
 
-                  return (
-                    <td
-                      key={day}
-                      className={getRoomCellClassName({
-                        value,
-                        formatType,
-                      })}
-                    >
-                      {formatValue(value)}
-                    </td>
-                  );
-                })}
+                  {days.map((day) => {
+                    const value =
+                      row.daily_values?.[day];
 
-                <td
-  className="
-    sticky
-    right-0
-    z-10
-    bg-white
-    font-extrabold
-    text-gray-950
-  "
->
-                  {formatValue(row.month_total)}
-                </td>
-              </tr>
-            ))}
+                    return (
+                      <td
+                        key={day}
+                        className={`
+                          ${getRoomCellClassName({
+                            value,
+                            formatType,
+                          })}
+                          text-[12px]
+                          ${
+                            isTotalRow
+                              ? "bg-gray-100 total-row-cell"
+                              : ""
+                          }
+                        `}
+                      >
+                        {formatValue(value)}
+                      </td>
+                    );
+                  })}
+
+                  <td
+                    className={`
+                      month-total-cell
+                      sticky
+                      right-0
+                      z-10
+                      text-[12px]
+                      ${
+                        isTotalRow
+                          ? "bg-gray-100 total-row-cell"
+                          : "bg-white"
+                      }
+                    `}
+                  >
+                    {formatValue(
+                      row.month_total
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

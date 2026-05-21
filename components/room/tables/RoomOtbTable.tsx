@@ -1,54 +1,61 @@
-type RoomDailyValue = {
-  day: string;
-  value: number | string | null;
-};
-
-type RoomOtbRow = {
-  room_code: string;
-  room_name: string;
-  values: RoomDailyValue[];
-  month_total: number | string | null;
-};
+import { RoomTableCell } from "./RoomTableCell";
+import { RoomTableHeader } from "./RoomTableHeader";
+import { RoomTableRow } from "./RoomTableRow";
 
 type Props = {
-  data: RoomOtbRow[];
+  data: any[];
 };
 
-export function RoomOtbTable({ data }: Props) {
-  if (!data || data.length === 0) {
+export function RoomRevTable({
+  data,
+}: Props) {
+  if (!data?.length) {
     return null;
   }
 
+  const days = Object.keys(data[0].values ?? {});
+
   return (
-    <div className="room-report-table-wrapper">
-      <table className="room-report-table">
+    <div className="overflow-x-auto">
+      <table className="w-full border-collapse text-[12px]">
         <thead>
           <tr>
-            <th className="room-type-cell">Room Type</th>
+            <RoomTableHeader align="left">
+              Room Type
+            </RoomTableHeader>
 
-            {data[0].values.map((item) => (
-              <th key={item.day}>{item.day}</th>
+            {days.map((day) => (
+              <RoomTableHeader key={day}>
+                {day}
+              </RoomTableHeader>
             ))}
 
-            <th>Month Total</th>
+            <RoomTableHeader isMonthTotal>
+              Month Total
+            </RoomTableHeader>
           </tr>
         </thead>
 
         <tbody>
           {data.map((row) => (
-            <tr key={row.room_code}>
-              <td className="room-type-cell">
+            <RoomTableRow key={row.room_code}>
+              <RoomTableCell
+                align="left"
+                bold
+              >
                 {row.room_name}
-              </td>
+              </RoomTableCell>
 
-              {row.values.map((item) => (
-                <td key={`${row.room_code}-${item.day}`}>
-                  {item.value ?? "-"}
-                </td>
+              {days.map((day) => (
+                <RoomTableCell key={day}>
+                  {row.values?.[day] ?? "-"}
+                </RoomTableCell>
               ))}
 
-              <td>{row.month_total ?? "-"}</td>
-            </tr>
+              <RoomTableCell bold isMonthTotal>
+                {row.month_total}
+              </RoomTableCell>
+            </RoomTableRow>
           ))}
         </tbody>
       </table>

@@ -1,0 +1,168 @@
+.los-page {
+  padding: 32px;
+  background: #f4f6f8;
+  min-height: 100vh;
+}
+
+.los-title {
+  font-size: 36px;
+  font-weight: 800;
+  color: #102033;
+  margin-bottom: 8px;
+}
+
+.los-subtitle {
+  color: #5f6f82;
+  margin-bottom: 22px;
+}
+
+.los-filter-card {
+  display: flex;
+  align-items: end;
+  gap: 14px;
+  width: fit-content;
+  overflow-x: auto;
+  background: #ffffff;
+  border: 1px solid #dbe3ea;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+  margin-bottom: 12px;
+}
+
+.los-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.los-filter-group label {
+  font-size: 12px;
+  font-weight: 800;
+  color: #607089;
+}
+
+.los-filter-group select {
+  height: 42px;
+  border: 1px solid #d12a2a;
+  border-radius: 8px;
+  padding: 0 14px;
+  background: #ffffff;
+  color: #102033;
+}
+
+.los-filter-hotel select {
+  width: 300px;
+}
+
+.los-filter-year select {
+  width: 140px;
+}
+
+.los-filter-month select {
+  width: 140px;
+}
+
+.los-filter-date input {
+  width: 210px;
+  height: 42px;
+  border: 1px solid #d12a2a;
+  border-radius: 8px;
+  padding: 0 14px;
+  background: #ffffff;
+  color: #102033;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.los-filter-date input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 1;
+}
+
+.los-filter-button {
+  height: 42px;
+  min-width: 140px;
+  border-radius: 8px;
+  background: #006b5b;
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.los-tab-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.los-tab {
+  border-radius: 8px;
+  background: #006b5b;
+  color: #ffffff;
+  font-weight: 700;
+  padding: 10px 28px;
+}
+
+.los-tab.active {
+  background: #c71920;
+}
+
+.los-chart-row {
+  display: flex;
+  gap: 18px;
+  width: fit-content;
+  overflow-x: auto;
+}
+
+.los-chart-card,
+.los-trend-card {
+  background: #ffffff;
+  border: 1px solid #006b5b;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+
+.los-chart-card {
+  width: 500px;
+}
+
+.los-chart-title {
+  background: #006b5b;
+  color: #ffffff;
+  text-align: center;
+  font-weight: 800;
+  font-size: 20px;
+  padding: 8px;
+}
+
+.los-chart-body {
+  padding: 16px;
+}
+
+.los-trend-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: fit-content;
+  overflow-x: auto;
+}
+
+.los-trend-card {
+  width: 1040px;
+}
+
+.los-trend-body {
+  padding: 18px;
+}
+
+.los-empty-state,
+.los-loading-state {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 40px;
+  text-align: center;
+  color: #607089;
+  font-weight: 600;
+}

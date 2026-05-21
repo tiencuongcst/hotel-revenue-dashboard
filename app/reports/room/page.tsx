@@ -1,6 +1,7 @@
 import { getRoomKpi } from "@/services/room/room-kpi.service";
 import { getRoomCharts } from "@/services/room/room-chart.service";
 import { getRoomHotelOptions } from "@/services/room/room-filter.service";
+import { getRoomOccTrendYear } from "@/services/room/getRoomOccTrendYear";
 
 import { RoomEmptyState } from "@/components/room/states/RoomEmptyState";
 import { RoomFilters } from "@/components/room/filters/RoomFilters";
@@ -47,7 +48,7 @@ export default async function RoomPage({ searchParams }: Props) {
     );
   }
 
-  const [kpiData, chartData] = await Promise.all([
+  const [kpiData, chartData, occTrendRows] = await Promise.all([
     getRoomKpi({
       hotelCode,
       yearStay,
@@ -55,6 +56,12 @@ export default async function RoomPage({ searchParams }: Props) {
       reportDate,
     }),
     getRoomCharts({
+      hotelCode,
+      yearStay,
+      monthStay,
+      reportDate,
+    }),
+    getRoomOccTrendYear({
       hotelCode,
       yearStay,
       monthStay,
@@ -83,14 +90,17 @@ export default async function RoomPage({ searchParams }: Props) {
 
       {hasData ? (
         <>
-          <RoomKpiTabs data={kpiData} />
+          <RoomKpiTabs
+  data={kpiData}
+  occTrendRows={occTrendRows}
+>
+  <RoomTopRoomTypeCards
+    adrRows={kpiData.adr}
+    occRows={kpiData.occ}
+  />
 
-          <RoomTopRoomTypeCards
-            adrRows={kpiData.adr}
-            occRows={kpiData.occ}
-          />
-
-          <RoomChartsSection data={chartData} />
+  <RoomChartsSection data={chartData} />
+</RoomKpiTabs>
         </>
       ) : (
         <RoomEmptyState />

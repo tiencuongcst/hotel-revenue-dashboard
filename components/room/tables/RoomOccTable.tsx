@@ -17,7 +17,7 @@ export function RoomRevTable({
 
   return (
     <div className="overflow-x-auto">
-      <table className="w-full border-collapse text-[13px]">
+      <table className="w-full border-collapse text-[12px]">
         <thead>
           <tr>
             <RoomTableHeader align="left">
@@ -30,7 +30,7 @@ export function RoomRevTable({
               </RoomTableHeader>
             ))}
 
-            <RoomTableHeader>
+            <RoomTableHeader isMonthTotal>
               Month Total
             </RoomTableHeader>
           </tr>
@@ -52,7 +52,7 @@ export function RoomRevTable({
                 </RoomTableCell>
               ))}
 
-              <RoomTableCell bold>
+              <RoomTableCell bold isMonthTotal>
                 {row.month_total}
               </RoomTableCell>
             </RoomTableRow>

@@ -21,3 +21,8 @@ export type RoomKpiFormatType =
   | "number"
   | "currency"
   | "percent";
+  export type RoomOccTrendYearRow = {
+  room_type: string;
+  room_name: string;
+  values: Record<string, number>;
+};
