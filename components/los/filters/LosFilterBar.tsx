@@ -1,102 +1,92 @@
-"use client";
-
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-
-import type { LosHotelOption } from "@/types/los";
-
-type Props = {
-  hotels: LosHotelOption[];
-  selectedHotelCode: string;
-  selectedReportDate: string;
-  selectedYear: number;
-  selectedMonth: number;
+type LosHotelOption = {
+  hotel_code: string;
+  hotel_name?: string | null;
 };
 
+type LosFilterBarProps = {
+  hotels?: LosHotelOption[];
+  selectedHotelCode?: string;
+  selectedYear?: number;
+  selectedMonth?: number;
+};
+
+const YEAR_OPTIONS = Array.from({ length: 13 }, (_, index) => 2023 + index);
+
+const MONTH_OPTIONS = Array.from({ length: 12 }, (_, index) => index + 1);
+
 export function LosFilterBar({
-  hotels,
-  selectedHotelCode,
-  selectedReportDate,
-  selectedYear,
-  selectedMonth,
-}: Props) {
-  const router = useRouter();
-
-  const [hotelCode, setHotelCode] = useState(selectedHotelCode);
-  const [year, setYear] = useState(String(selectedYear));
-  const [month, setMonth] = useState(String(selectedMonth));
-  const [reportDate, setReportDate] = useState(selectedReportDate);
-
-  const yearOptions = Array.from({ length: 13 }, (_, index) => 2023 + index);
-  const monthOptions = Array.from({ length: 12 }, (_, index) => index + 1);
-
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    const params = new URLSearchParams();
-
-    params.set("hotel_code", hotelCode);
-    params.set("year", year);
-    params.set("month", month);
-    params.set("report_date", reportDate);
-
-    router.push(`/reports/los?${params.toString()}`);
-  }
+  hotels = [],
+  selectedHotelCode = "",
+  selectedYear = new Date().getFullYear(),
+  selectedMonth = new Date().getMonth() + 1,
+}: LosFilterBarProps) {
+  const safeHotels = Array.isArray(hotels) ? hotels : [];
 
   return (
-    <form className="los-filter-card" onSubmit={handleSubmit}>
-      <div className="los-filter-group los-filter-hotel">
-        <label>HOTEL</label>
+    <form className="los-filter-card">
+      <div className="los-filter-grid">
+        <div className="los-filter-field">
+          <label htmlFor="hotel_code" className="los-filter-label">
+            Hotel
+          </label>
+          <select
+            id="hotel_code"
+            name="hotel_code"
+            defaultValue={selectedHotelCode}
+            className="los-filter-input"
+          >
+            {safeHotels.length === 0 ? (
+              <option value="">No hotel</option>
+            ) : (
+              safeHotels.map((hotel) => (
+                <option key={hotel.hotel_code} value={hotel.hotel_code}>
+                  {hotel.hotel_name ?? hotel.hotel_code}
+                </option>
+              ))
+            )}
+          </select>
+        </div>
 
-        <select
-          value={hotelCode}
-          onChange={(event) => setHotelCode(event.target.value)}
-        >
-          {hotels.map((hotel) => (
-            <option key={hotel.hotel_code} value={hotel.hotel_code}>
-              {hotel.hotel_name}
-            </option>
-          ))}
-        </select>
+        <div className="los-filter-field">
+          <label htmlFor="year" className="los-filter-label">
+            Year
+          </label>
+          <select
+            id="year"
+            name="year"
+            defaultValue={selectedYear}
+            className="los-filter-input"
+          >
+            {YEAR_OPTIONS.map((year) => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="los-filter-field">
+          <label htmlFor="month" className="los-filter-label">
+            Month
+          </label>
+          <select
+            id="month"
+            name="month"
+            defaultValue={selectedMonth}
+            className="los-filter-input"
+          >
+            {MONTH_OPTIONS.map((month) => (
+              <option key={month} value={month}>
+                {month}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <button type="submit" className="los-filter-button">
+          Apply
+        </button>
       </div>
-
-      <div className="los-filter-group los-filter-year">
-        <label>YEAR</label>
-
-        <select value={year} onChange={(event) => setYear(event.target.value)}>
-          {yearOptions.map((yearOption) => (
-            <option key={yearOption} value={yearOption}>
-              {yearOption}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className="los-filter-group los-filter-month">
-        <label>MONTH</label>
-
-        <select value={month} onChange={(event) => setMonth(event.target.value)}>
-          {monthOptions.map((monthOption) => (
-            <option key={monthOption} value={monthOption}>
-              {String(monthOption).padStart(2, "0")}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className="los-filter-group los-filter-date">
-        <label>REPORT DATE</label>
-
-        <input
-          type="date"
-          value={reportDate}
-          onChange={(event) => setReportDate(event.target.value)}
-        />
-      </div>
-
-      <button className="los-filter-button" type="submit">
-        Apply Filter
-      </button>
     </form>
   );
 }
