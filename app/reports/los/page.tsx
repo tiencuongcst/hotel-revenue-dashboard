@@ -49,7 +49,7 @@ export default async function LosPage({ searchParams }: LosPageProps) {
 
   return (
     <main className="los-page">
-      <h1 className="los-title">LOS</h1>
+      <h1 className="los-title">Length Of Stay</h1>
 
       <p className="los-subtitle">
         Lead time and length of stay by segment group

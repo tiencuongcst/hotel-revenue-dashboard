@@ -35,7 +35,7 @@ export function LogoutButton() {
   height: "42px",
   border: "none",
   borderRadius: "12px",
-  backgroundColor: "#758294",
+  backgroundColor: "#611800",
   color: "#ffffff",
   fontSize: "16px",
   fontWeight: 700,
