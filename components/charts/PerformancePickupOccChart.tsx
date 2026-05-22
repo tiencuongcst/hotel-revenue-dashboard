@@ -89,14 +89,59 @@ export function PerformancePickupOccChart({ rows }: Props) {
                 tick={{ fontSize: 12, fill: '#0a4a32' }}
               />
 
-              <Tooltip />
+              <Tooltip
+                formatter={(value) => {
+                  const numericValue = Number(value);
+
+                  if (!Number.isFinite(numericValue)) {
+                    return '-';
+                  }
+
+                  return `${numericValue.toFixed(2)} %`;
+                }}
+              />
 
               <Legend verticalAlign="top" />
 
-              <Line type="monotone" dataKey="bud" name="Budget" stroke="#4b5563" strokeWidth={2} dot={false} connectNulls />
-              <Line type="monotone" dataKey="last_month" name="Previous" stroke="#7b2d2d" strokeWidth={2} dot={false} connectNulls />
-              <Line type="monotone" dataKey="ly" name="LY" stroke="#ff5a1f" strokeWidth={2} dot={false} connectNulls />
-              <Line type="monotone" dataKey="this_month" name="Current" stroke="#006b5b" strokeWidth={3} dot={false} connectNulls />
+              <Line
+                type="monotone"
+                dataKey="bud"
+                name="Budget"
+                stroke="#4b5563"
+                strokeWidth={2}
+                dot={false}
+                connectNulls
+              />
+
+              <Line
+                type="monotone"
+                dataKey="last_month"
+                name="Previous"
+                stroke="#7b2d2d"
+                strokeWidth={2}
+                dot={false}
+                connectNulls
+              />
+
+              <Line
+                type="monotone"
+                dataKey="ly"
+                name="LY"
+                stroke="#ff5a1f"
+                strokeWidth={2}
+                dot={false}
+                connectNulls
+              />
+
+              <Line
+                type="monotone"
+                dataKey="this_month"
+                name="Current"
+                stroke="#006b5b"
+                strokeWidth={3}
+                dot={false}
+                connectNulls
+              />
             </LineChart>
           </ResponsiveContainer>
         )}
