@@ -24,14 +24,16 @@ type Props = {
   type: ChartType;
 };
 
-function normalizeOccupancy(value: number | null | undefined) {
+function normalizeOccupancy(
+  value: number | null | undefined
+) {
   if (value === null || value === undefined) return 0;
 
   const numericValue = Number(value);
 
   if (!Number.isFinite(numericValue)) return 0;
 
-  return numericValue <= 1 ? numericValue * 100 : numericValue;
+  return numericValue * 100;
 }
 
 function formatNumber(value: number) {
