@@ -36,17 +36,17 @@ function getStringParam(value: string | undefined, fallback: string): string {
   const normalizedValue = normalizeDate(value)
   const normalizedFallback = normalizeDate(fallback)
 
-  return normalizedValue.length > 0
-    ? normalizedValue
-    : normalizedFallback
+  return normalizedValue.length > 0 ? normalizedValue : normalizedFallback
 }
 
 function getNumberParam(value: string | undefined, fallback: number): number {
   const parsedValue = Number(value)
 
-  return Number.isFinite(parsedValue)
-    ? parsedValue
-    : fallback
+  return Number.isFinite(parsedValue) ? parsedValue : fallback
+}
+
+function formatDate(date: Date): string {
+  return date.toISOString().slice(0, 10)
 }
 
 function subtractDays(dateValue: string, days: number): string {
@@ -56,7 +56,7 @@ function subtractDays(dateValue: string, days: number): string {
 
   date.setDate(date.getDate() - days)
 
-  return date.toISOString().slice(0, 10)
+  return formatDate(date)
 }
 
 function buildReportDateOptions(
@@ -89,84 +89,48 @@ function buildReportDateOptions(
     }))
 }
 
-export default async function PacePage({
-  searchParams,
-}: PacePageProps) {
-  const params = searchParams
-    ? await searchParams
-    : {}
+export default async function PacePage({ searchParams }: PacePageProps) {
+  const params = searchParams ? await searchParams : {}
+
+  const today = new Date()
+  const todayDate = formatDate(today)
 
   const hotelCode =
-    params.hotel_code &&
-    params.hotel_code.trim().length > 0
+    params.hotel_code && params.hotel_code.trim().length > 0
       ? params.hotel_code
       : 'GDB'
 
-  const stayYear = getNumberParam(
-    params.stay_year,
-    2026
-  )
+  const stayYear = getNumberParam(params.stay_year, today.getFullYear())
 
-  const stayMonth = getNumberParam(
-    params.stay_month,
-    5
+  const stayMonth = getNumberParam(params.stay_month, today.getMonth() + 1)
+
+  const reportDate2 = getStringParam(params.report_date_2, todayDate)
+
+  const reportDate1 = getStringParam(
+    params.report_date_1,
+    subtractDays(todayDate, 5)
   )
 
   const hotels = await getHotelOptions()
 
-  const rawAvailableReportDates =
-    await getPaceAvailableReportDates({
-      hotelCode,
-      stayYear,
-      stayMonth,
-    })
+  const rawAvailableReportDates = await getPaceAvailableReportDates({
+    hotelCode,
+    stayYear,
+    stayMonth,
+  })
 
-  const availableReportDates =
-    rawAvailableReportDates
-      .map((item) => ({
-        report_date: normalizeDate(
-          item.report_date
-        ),
-      }))
-      .filter(
-        (item) => item.report_date.length > 0
-      )
-      .sort((a, b) =>
-        a.report_date.localeCompare(
-          b.report_date
-        )
-      )
+  const availableReportDates = rawAvailableReportDates
+    .map((item) => ({
+      report_date: normalizeDate(item.report_date),
+    }))
+    .filter((item) => item.report_date.length > 0)
+    .sort((a, b) => a.report_date.localeCompare(b.report_date))
 
-  const firstAvailableReportDate =
-    availableReportDates[0]?.report_date ?? ''
-
-  const lastAvailableReportDate =
-    availableReportDates[
-      availableReportDates.length - 1
-    ]?.report_date ?? ''
-
-  const reportDate2 = getStringParam(
-    params.report_date_2,
-    lastAvailableReportDate
+  const reportDateOptions = buildReportDateOptions(
+    availableReportDates,
+    reportDate1,
+    reportDate2
   )
-
-  const autoReportDate1 = subtractDays(
-    reportDate2,
-    5
-  )
-
-  const reportDate1 = getStringParam(
-    params.report_date_1,
-    autoReportDate1 ||
-      firstAvailableReportDate
-  )
-
-  const reportDateOptions =
-    buildReportDateOptions(
-      availableReportDates,
-      reportDate1,
-      reportDate2
-    )
 
   const rows =
     reportDate1 && reportDate2
@@ -190,13 +154,10 @@ export default async function PacePage({
   return (
     <main className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-slate-950">
-          Pace Trend
-        </h1>
+        <h1 className="text-3xl font-bold text-slate-950">Pace Trend</h1>
 
         <p className="mt-2 text-sm text-slate-500">
-          Compare Pace 1, Pace 2 and
-          Budget by stay date.
+          Compare Pace 1, Pace 2 and Budget by stay date.
         </p>
       </div>
 
@@ -210,17 +171,10 @@ export default async function PacePage({
           <div className="pace-filter-field">
             <label>Hotel</label>
 
-            <select
-              name="hotel_code"
-              defaultValue={hotelCode}
-            >
+            <select name="hotel_code" defaultValue={hotelCode}>
               {hotels.map((hotel) => (
-                <option
-                  key={hotel.hotel_code}
-                  value={hotel.hotel_code}
-                >
-                  {hotel.hotel_name ??
-                    hotel.hotel_code}
+                <option key={hotel.hotel_code} value={hotel.hotel_code}>
+                  {hotel.hotel_name ?? hotel.hotel_code}
                 </option>
               ))}
             </select>
@@ -229,48 +183,28 @@ export default async function PacePage({
           <div className="pace-filter-field">
             <label>Year</label>
 
-            <select
-              name="stay_year"
-              defaultValue={String(
-                stayYear
+            <select name="stay_year" defaultValue={String(stayYear)}>
+              {Array.from({ length: 13 }, (_, index) => 2023 + index).map(
+                (year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                )
               )}
-            >
-              {Array.from(
-                { length: 13 },
-                (_, index) => 2023 + index
-              ).map((year) => (
-                <option
-                  key={year}
-                  value={year}
-                >
-                  {year}
-                </option>
-              ))}
             </select>
           </div>
 
           <div className="pace-filter-field">
             <label>Month</label>
 
-            <select
-              name="stay_month"
-              defaultValue={String(
-                stayMonth
+            <select name="stay_month" defaultValue={String(stayMonth)}>
+              {Array.from({ length: 12 }, (_, index) => index + 1).map(
+                (month) => (
+                  <option key={month} value={month}>
+                    {month.toString().padStart(2, '0')}
+                  </option>
+                )
               )}
-            >
-              {Array.from(
-                { length: 12 },
-                (_, index) => index + 1
-              ).map((month) => (
-                <option
-                  key={month}
-                  value={month}
-                >
-                  {month
-                    .toString()
-                    .padStart(2, '0')}
-                </option>
-              ))}
             </select>
           </div>
 
@@ -282,15 +216,6 @@ export default async function PacePage({
               name="report_date_1"
               type="date"
               defaultValue={reportDate1}
-              min={
-                reportDateOptions[0]
-                  ?.report_date
-              }
-              max={
-                reportDateOptions[
-                  reportDateOptions.length - 1
-                ]?.report_date
-              }
             />
           </div>
 
@@ -302,22 +227,10 @@ export default async function PacePage({
               name="report_date_2"
               type="date"
               defaultValue={reportDate2}
-              min={
-                reportDateOptions[0]
-                  ?.report_date
-              }
-              max={
-                reportDateOptions[
-                  reportDateOptions.length - 1
-                ]?.report_date
-              }
             />
           </div>
 
-          <button
-            type="submit"
-            className="app-button-primary pace-filter-button"
-          >
+          <button type="submit" className="app-button-primary pace-filter-button">
             Apply Filter
           </button>
         </div>
@@ -348,15 +261,13 @@ export default async function PacePage({
       </div>
 
       <div className="space-y-6">
-        {visibleMetrics.map(
-          (metricCode) => (
-            <PaceTrendChart
-              key={metricCode}
-              rows={rows}
-              metricCode={metricCode}
-            />
-          )
-        )}
+        {visibleMetrics.map((metricCode) => (
+          <PaceTrendChart
+            key={metricCode}
+            rows={rows}
+            metricCode={metricCode}
+          />
+        ))}
       </div>
     </main>
   )
