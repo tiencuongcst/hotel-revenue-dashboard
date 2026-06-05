@@ -6,6 +6,7 @@ import { LogoutButton } from "@/components/layout/LogoutButton";
 
 const navItems = [
   { label: "Performance", href: "/reports/performance" },
+  { label: "YOY", href: "/reports/yoy" },
   { label: "Pace Trend", href: "/reports/pace" },
   { label: "Room", href: "/reports/room" },
   { label: "Market Segment", href: "/reports/segment" },
