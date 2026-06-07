@@ -21,7 +21,36 @@ export function RoomKpiTable({
     return <div className="rounded-xl border p-6">No data</div>;
   }
 
-  const days = Object.keys(rows[0].daily_values || {});
+  const days = Array.from(
+  new Set(
+    rows.flatMap((row) =>
+      Object.keys(row.daily_values || {})
+    )
+  )
+).sort((a, b) => {
+  const parseDay = (value: string) => {
+    const [day, month] = value.split("-");
+
+    const monthMap: Record<string, number> = {
+      Jan: 1,
+      Feb: 2,
+      Mar: 3,
+      Apr: 4,
+      May: 5,
+      Jun: 6,
+      Jul: 7,
+      Aug: 8,
+      Sep: 9,
+      Oct: 10,
+      Nov: 11,
+      Dec: 12,
+    };
+
+    return (monthMap[month] ?? 0) * 100 + Number(day);
+  };
+
+  return parseDay(a) - parseDay(b);
+});
 
   function formatValue(value?: number) {
     if (formatType === "currency") return formatCurrency(value);
